@@ -3,9 +3,10 @@ const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const path = require('path');
+const { prototype } = require('events');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const port = process.env.PORT || 3001;
 
 let transporter;
 
@@ -54,15 +55,17 @@ async function startServer() {
         });
         
         // Start the server
-        const server = app.listen(PORT, '0.0.0.0', () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
+        const server = app.listen(port, '0.0.0.0', () => {
+            console.log(`Server is running on http://0.0.0.0:${port}`);
+            console.log(`Access locally at: http://localhost:${port}`);
             console.log('Using Gmail SMTP with account:', process.env.GMAIL_USER);
         });
         
         // Handle server errors
         server.on('error', (error) => {
             if (error.code === 'EADDRINUSE') {
-                console.error(`Port ${PORT} is already in use. Please stop the other process or use a different port.`);
+                console.error(`Port ${port} is already in use. Please stop the other process or use a different port.`);
+                console.log(`You can try changing the port by setting the PORT environment variable (e.g., PORT=3007)`);
             } else {
                 console.error('Server error:', error);
             }
@@ -141,7 +144,4 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+// Server is started in the startServer() function above
