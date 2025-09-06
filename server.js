@@ -7,60 +7,67 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+let transporter;
+
+// Create reusable transporter object using Gmail SMTP
+const createTransporter = () => {
+    return nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_APP_PASSWORD  // Use App Password, not your regular password
+        }
+    });
+};
+
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/')));
 
-// Create a test account using ethereal.email (for development only)
-// In production, replace this with your actual email service
-const createTestAccount = async () => {
-    try {
-        const testAccount = await nodemailer.createTestAccount();
-        console.log('Test account created:', testAccount.user);
-        console.log('Test account password:', testAccount.pass);
-        
-        return nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
-            port: 587,
-            secure: false,
-            auth: {
-                user: testAccount.user,
-                pass: testAccount.pass
-            }
-        });
-    } catch (error) {
-        console.error('Error creating test account:', error);
-        throw error;
-    }
-};
-
-// Initialize transporter and start server
+// Initialize and start the server
 async function startServer() {
     try {
-        // Create test email account
-        const transporter = await createTestAccount();
+        // Check for required environment variables
+        if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+            throw new Error('Missing required Gmail configuration. Please set GMAIL_USER and GMAIL_APP_PASSWORD environment variables.');
+        }
+
+        // Create Gmail transporter
+        transporter = createTransporter();
         
         // Test email configuration
         await new Promise((resolve, reject) => {
             transporter.verify((error, success) => {
                 if (error) {
-                    console.error('Error with email configuration:', error);
+                    console.error('Error with Gmail configuration:', error);
+                    console.error('Please ensure:');
+                    console.error('1. You have enabled 2-Step Verification for your Gmail account');
+                    console.error('2. You have created an App Password for this application');
+                    console.error('3. The GMAIL_USER and GMAIL_APP_PASSWORD environment variables are set correctly');
                     reject(error);
                 } else {
-                    console.log('Server is ready to send emails');
+                    console.log('Gmail SMTP is ready to send emails');
                     resolve(success);
                 }
             });
         });
         
         // Start the server
-        app.listen(PORT, () => {
+        const server = app.listen(PORT, '0.0.0.0', () => {
             console.log(`Server is running on http://localhost:${PORT}`);
+            console.log('Using Gmail SMTP with account:', process.env.GMAIL_USER);
         });
         
-        // Make transporter available to route handlers
-        app.set('transporter', transporter);
+        // Handle server errors
+        server.on('error', (error) => {
+            if (error.code === 'EADDRINUSE') {
+                console.error(`Port ${PORT} is already in use. Please stop the other process or use a different port.`);
+            } else {
+                console.error('Server error:', error);
+            }
+            process.exit(1);
+        });
         
     } catch (error) {
         console.error('Failed to start server:', error);
@@ -75,15 +82,15 @@ startServer();
 app.post('/api/send-email', async (req, res) => {
     try {
         const { name, email, subject, message } = req.body;
-        const transporter = app.get('transporter');
-
-        // Get test account info for demonstration
-        const testAccount = await nodemailer.createTestAccount();
+        
+        if (!transporter) {
+            throw new Error('Email service not initialized');
+        }
         
         // Email options
         const mailOptions = {
-            from: `"${name}" <${testAccount.user}>`,
-            to: testAccount.user, // Using test account for demo
+            from: `"${name}" <${process.env.GMAIL_USER}>`,
+            to: process.env.GMAIL_USER, // Send to your own email
             replyTo: email,
             subject: `[Portfolio Contact] ${subject}`,
             text: `
@@ -106,22 +113,18 @@ app.post('/api/send-email', async (req, res) => {
                         <p style="white-space: pre-line; margin: 0;">${message}</p>
                     </div>
                     <p style="margin-top: 20px; color: #666; font-size: 0.9em;">
-                        This is a test email from your portfolio website. In production, this would be sent to your actual email.
+                        This message was sent from your portfolio website.
                     </p>
                 </div>
             `
         };
 
         // Send email
-        const info = await transporter.sendMail(mailOptions);
-        
-        // Log the test email URL (ethereal.email)
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+        await transporter.sendMail(mailOptions);
         
         res.status(200).json({ 
             success: true, 
-            message: 'Test message sent successfully!',
-            previewUrl: nodemailer.getTestMessageUrl(info)
+            message: 'Your message has been sent successfully! I will get back to you soon.'
         });
     } catch (error) {
         console.error('Error sending email:', error);
