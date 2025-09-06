@@ -11,6 +11,7 @@
 *.sln.docstates
 *.env
 *.png
+for_me.txt
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
