@@ -31,31 +31,280 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
-                <div class="profile-image-container">
-                    <img src="images/linkedIn_picture.png" alt="Utshah Neupane" class="profile-image">
-                </div>
-                <div class="hero-text">
-                    <h1>Utshah Neupane</h1>
-                    <h2>Computer Science Student</h2>
-                    <div class="contact-info">
-                        <p><i class="fas fa-map-marker-alt"></i> Arlington, TX</p>
-                        <p><i class="fas fa-envelope"></i> utshah777@gmail.com</p>
-                        <div class="social-links">
-                            <a href="https://www.linkedin.com/in/utshah-neupane/" target="_blank" aria-label="LinkedIn">
-                                <i class="fab fa-linkedin"></i>
-                            </a>
-                            <a href="https://github.com/Utshah-Neupane" target="_blank" aria-label="GitHub">
-                                <i class="fab fa-github"></i>
-                            </a>
-                        </div>
+                <div class="hero-text" data-aos="fade-right">
+                    <h1>Hi, I'm <span>Utshah Neupane</span></h1>
+                    <h2 class="typewriter">I'm a <span class="typed-text">Computer Science Student</span></h2>
+                    <p class="hero-description">Passionate about building innovative solutions and creating exceptional digital experiences through clean, efficient code.</p>
+                    <div class="cta-buttons">
+                        <a href="#about" class="btn btn-primary">Learn More</a>
+                        <a href="#contact" class="btn btn-outline">Contact Me</a>
                     </div>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/utshah-neupane/" target="_blank" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://github.com/Utshah-Neupane" target="_blank" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="mailto:utshah777@gmail.com" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="profile-image-container" data-aos="fade-left">
+                    <div class="profile-image-wrapper">
+                        <img src="images/linkedIn_picture.png" alt="Utshah Neupane" class="profile-image">
+                    </div>
+                    <div class="hero-shape"></div>
                 </div>
             </div>
         </div>
     </section>
+    
+    <style>
+    /* Hero Section Styling */
+    .hero {
+        padding: 120px 0 80px;
+        background: linear-gradient(135deg, #f9f5f0 0%, #f0e6dd 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero .container {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .hero-content {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+    }
+    
+    .hero-text {
+        flex: 1;
+    }
+    
+    .hero h1 {
+        font-size: 3.2rem;
+        margin-bottom: 15px;
+        color: #333;
+        line-height: 1.2;
+    }
+    
+    .hero h1 span {
+        color: #5d4037;
+        position: relative;
+    }
+    
+    .hero h1 span::after {
+        content: '';
+        position: absolute;
+        bottom: 5px;
+        left: 0;
+        width: 100%;
+        height: 8px;
+        background-color: rgba(93, 64, 55, 0.2);
+        z-index: -1;
+    }
+    
+    .hero h2 {
+        font-size: 1.8rem;
+        color: #5d4037;
+        margin-bottom: 20px;
+        font-weight: 500;
+        min-height: 2.5rem;
+    }
+    
+    .hero-description {
+        font-size: 1.1rem;
+        color: #555;
+        margin-bottom: 30px;
+        max-width: 600px;
+        line-height: 1.7;
+    }
+    
+    .cta-buttons {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+    
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.8rem 2rem;
+        border-radius: 30px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+    
+    .btn-primary {
+        background-color: #5d4037;
+        color: #fff;
+        border: 2px solid #5d4037;
+    }
+    
+    .btn-primary:hover {
+        background-color: #3e2723;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .btn-outline {
+        background: transparent;
+        color: #5d4037;
+        border: 2px solid #5d4037;
+    }
+    
+    .btn-outline:hover {
+        background-color: #5d4037;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .social-links {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .social-links a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #fff;
+        color: #5d4037;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .social-links a:hover {
+        background-color: #5d4037;
+        color: #fff;
+        transform: translateY(-3px);
+    }
+    
+    .profile-image-container {
+        flex: 1;
+        position: relative;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .profile-image-wrapper {
+        position: relative;
+        z-index: 2;
+        width: 350px;
+        height: 350px;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        border: 10px solid #fff;
+    }
+    
+    .profile-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .hero-shape {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        height: 400px;
+        background: linear-gradient(45deg, rgba(93, 64, 55, 0.1) 0%, rgba(255,255,255,0) 70%);
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        animation: morph 8s ease-in-out infinite;
+        z-index: 1;
+    }
+    
+    @keyframes morph {
+        0% {
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+        50% {
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        }
+        100% {
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+    }
+    
+    @media (max-width: 992px) {
+        .hero-content {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+        
+        .hero h2 {
+            font-size: 1.5rem;
+        }
+        
+        .hero-description {
+            margin: 0 auto 30px;
+        }
+        
+        .cta-buttons {
+            justify-content: center;
+        }
+        
+        .social-links {
+            justify-content: center;
+        }
+        
+        .profile-image-wrapper {
+            width: 280px;
+            height: 280px;
+            margin-top: 30px;
+        }
+        
+        .hero-shape {
+            width: 320px;
+            height: 320px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .hero {
+            padding: 80px 0 40px;
+        }
+        
+        .hero h1 {
+            font-size: 2rem;
+        }
+        
+        .hero h2 {
+            font-size: 1.3rem;
+        }
+        
+        .cta-buttons {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .btn {
+            width: 100%;
+        }
+    }
+    </style>
 
     <main>
         <!-- Education Section -->
@@ -366,17 +615,19 @@
                 .project-image {
                     position: relative;
                     overflow: hidden;
-                    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+                    height: 220px; /* Fixed height for all project images */
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: #f5f5f5;
                 }
                 
                 .project-image img {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
                     width: 100%;
                     height: 100%;
-                    object-fit: cover;
+                    object-fit: contain;
                     transition: transform 0.5s ease;
+                    padding: 10px;
                 }
                 
                 .project-card:hover .project-image img {
